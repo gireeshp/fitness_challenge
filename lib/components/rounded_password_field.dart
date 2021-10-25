@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 
 class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
-  const RoundedPasswordField({
+  late TextEditingController controller;
+
+  RoundedPasswordField({
     Key? key,
     required this.onChanged,
+    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const TextFieldContainer(
+    return TextFieldContainer(
       child: TextField(
         obscureText: true,
-        decoration: InputDecoration(
+        controller: controller,
+        onChanged: onChanged,
+        decoration: const InputDecoration(
           hintText: 'Password',
           icon: Icon(
             Icons.lock,

@@ -6,13 +6,67 @@ import 'package:fitness_challenge/screens/Login/login_screen.dart';
 import 'package:fitness_challenge/screens/Signup/components/background.dart';
 import 'package:fitness_challenge/screens/Signup/components/or_divider.dart';
 import 'package:fitness_challenge/screens/Signup/components/social_icon.dart';
+import 'package:fitness_challenge/services/appwrite_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/src/provider.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
-  void press(BuildContext context) {}
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  Future<void> press(BuildContext context) async {
+    AppwriteService appwriteService = context.read<AppwriteService>();
+    String snackBarText = 'New user created successfully!';
+
+    bool successfullyRegistered = true;
+    int snackBarTime = 1500;
+
+    try {
+      await appwriteService.signUp(
+          email: _emailIdController.text,
+          password: _passwordController.text,
+          name: _userNameController.text);
+    } catch (e) {
+      snackBarText = e.toString();
+      snackBarTime = 2500;
+      successfullyRegistered = false;
+    }
+    SnackBar newUserSnackBar = SnackBar(
+      content: Text(snackBarText),
+      duration: Duration(milliseconds: snackBarTime),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(newUserSnackBar);
+    if (successfullyRegistered) {
+      appwriteService.signIn(
+          email: _emailIdController.text, password: _passwordController.text);
+    }
+  }
+
+  late TextEditingController _userNameController;
+  late TextEditingController _emailIdController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _userNameController = TextEditingController();
+    _emailIdController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _emailIdController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +76,40 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Signup',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             SizedBox(height: size.height * 0.03),
             SvgPicture.asset(
               'assets/icons/signup.svg',
-              height: size.height * 0.35,
+              height: size.height * 0.3,
+            ),
+            RoundedInputField(
+              hintText: 'Your Name',
+              icon: Icons.person,
+              onChanged: (value) {},
+              controller: _userNameController,
             ),
             RoundedInputField(
               hintText: 'Your Email',
-              icon: Icons.person,
+              icon: Icons.email,
               onChanged: (value) {},
+              controller: _emailIdController,
             ),
-            RoundedPasswordField(onChanged: (value) {}),
+            RoundedPasswordField(
+              onChanged: (value) {},
+              controller: _passwordController,
+            ),
             RoundedButton(text: 'Signup', press: press),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               login: false,
               press: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const LoginScreen();
-                }));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const LoginScreen();
+                    },
+                  ),
+                );
               },
             ),
             const OrDivider(),

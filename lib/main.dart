@@ -1,9 +1,19 @@
 import 'package:fitness_challenge/constants.dart';
+import 'package:fitness_challenge/screens/ListChallenges/challenges_screen.dart';
 import 'package:fitness_challenge/screens/Welcome/welcome_screen.dart';
+import 'package:fitness_challenge/services/appwrite_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AppwriteService(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +27,10 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const WelcomeScreen(),
+      // home: const WelcomeScreen(),
+      home: Scaffold(
+        body: ChallengesScreen(),
+      ),
     );
   }
 }

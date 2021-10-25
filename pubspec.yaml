@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   appwrite: ^2.0.1
   flutter_svg: ^0.23.0+1
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
