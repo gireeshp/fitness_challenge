@@ -1,16 +1,26 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class AppwriteService with ChangeNotifier {
+  final projectId = '616e3d7396bfb';
+  final userCollectionId = '617497ffb09f7';
+  final userActivitiesCollectionId = '6174984332af8';
+  final challengesCollectionId = '617872e12c3d8';
+  final userChallengesCollectionId = '617873272866b';
+  final leaderboardCollectionId = '617873ddacaec';
+  final appWriteEndPoint = 'https://localhost/v1';
+  final uuid = const Uuid();
+
   final Client _client = Client();
   late Account _account;
   late Database _database;
 
   AppwriteService() {
     _client
-        .setEndpoint('https://localhost/v1')
-        .setProject('616e3d7396bfb')
+        .setEndpoint(appWriteEndPoint)
+        .setProject(projectId)
         .setSelfSigned(status: true);
     _account = Account(_client);
     _database = Database(_client);
@@ -50,8 +60,12 @@ class AppwriteService with ChangeNotifier {
       {required String challengeName, required String measureType}) async {
     try {
       Document doc = await _database.createDocument(
-        collectionId: '6174982dcc198',
-        data: {'challenge_name': challengeName, 'measure_type': measureType},
+        collectionId: challengesCollectionId,
+        data: {
+          'challenge_id': uuid.v4(),
+          'challenge_name': challengeName,
+          'measure_type': measureType
+        },
       );
       debugPrint(doc.toString());
       debugPrint('New challenge created');

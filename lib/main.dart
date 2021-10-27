@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const WelcomeScreen(),
       home: Scaffold(
-        body: ChallengesScreen(),
+        body: WelcomeScreen(),
       ),
     );
   }
