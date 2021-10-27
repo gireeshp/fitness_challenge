@@ -2,7 +2,7 @@ import 'package:fitness_challenge/components/already_have_an_account_check.dart'
 import 'package:fitness_challenge/components/rounded_button.dart';
 import 'package:fitness_challenge/components/rounded_input_field.dart';
 import 'package:fitness_challenge/components/rounded_password_field.dart';
-import 'package:fitness_challenge/screens/ListChallenges/challenges_screen.dart';
+import 'package:fitness_challenge/screens/ListChallenges/challenges_listing_screen.dart';
 import 'package:fitness_challenge/screens/Login/login_screen.dart';
 import 'package:fitness_challenge/screens/Signup/components/background.dart';
 import 'package:fitness_challenge/screens/Signup/components/or_divider.dart';
@@ -50,7 +50,7 @@ class _BodyState extends State<Body> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const ChallengesScreen();
+            return const ChallengesListingScreen();
           },
         ),
       );

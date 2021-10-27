@@ -1,5 +1,5 @@
 import 'package:fitness_challenge/constants.dart';
-import 'package:fitness_challenge/screens/ListChallenges/challenges_screen.dart';
+import 'package:fitness_challenge/screens/ListChallenges/challenges_listing_screen.dart';
 import 'package:fitness_challenge/screens/Welcome/welcome_screen.dart';
 import 'package:fitness_challenge/services/appwrite_services.dart';
 import 'package:flutter/material.dart';

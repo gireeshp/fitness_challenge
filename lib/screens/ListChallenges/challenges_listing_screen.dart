@@ -1,17 +1,17 @@
 import 'package:fitness_challenge/constants.dart';
-import 'package:fitness_challenge/screens/ListChallenges/components/challenge_body.dart';
+import 'package:fitness_challenge/screens/ListChallenges/components/challenge_listing_body.dart';
 import 'package:fitness_challenge/screens/ListChallenges/components/profile_body.dart';
 import 'package:fitness_challenge/screens/NewChallenge/new_challenges_screen.dart';
 import 'package:flutter/material.dart';
 
-class ChallengesScreen extends StatefulWidget {
-  const ChallengesScreen({Key? key}) : super(key: key);
+class ChallengesListingScreen extends StatefulWidget {
+  const ChallengesListingScreen({Key? key}) : super(key: key);
 
   @override
-  _ChallengesScreenState createState() => _ChallengesScreenState();
+  _ChallengesListingScreenState createState() => _ChallengesListingScreenState();
 }
 
-class _ChallengesScreenState extends State<ChallengesScreen> {
+class _ChallengesListingScreenState extends State<ChallengesListingScreen> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -53,7 +53,7 @@ openNewChallengePage() {}
 
 Widget showTheRightPage(int selectedIndex) {
   if (selectedIndex == 0) {
-    return ChallengeBody();
+    return ChallengeListingBody();
   } else {
     return ProfileBody();
   }

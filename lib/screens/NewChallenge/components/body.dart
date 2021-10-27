@@ -35,13 +35,12 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Container(
       height: size.height,
       width: double.infinity,
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 10),
           const Text(

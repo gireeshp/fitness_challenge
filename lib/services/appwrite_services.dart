@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:fitness_challenge/beans/user_challenges_bean.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,6 +13,8 @@ class AppwriteService with ChangeNotifier {
   final leaderboardCollectionId = '617873ddacaec';
   final appWriteEndPoint = 'https://localhost/v1';
   final uuid = const Uuid();
+
+  late String _loggedInUser;
 
   final Client _client = Client();
   late Account _account;
@@ -32,6 +35,7 @@ class AppwriteService with ChangeNotifier {
     await result.then((response) {
       debugPrint(response.toString());
       Session session = response;
+      _loggedInUser = session.userId;
       debugPrint(session.toString());
     }).catchError((error) {
       debugPrint('Error while signing in');
@@ -59,16 +63,66 @@ class AppwriteService with ChangeNotifier {
   void createNewChallenge(
       {required String challengeName, required String measureType}) async {
     try {
-      Document doc = await _database.createDocument(
+      String challengeId = uuid.v4();
+      Document challengeDoc = await _database.createDocument(
         collectionId: challengesCollectionId,
         data: {
-          'challenge_id': uuid.v4(),
+          'challenge_id': challengeId,
           'challenge_name': challengeName,
           'measure_type': measureType
         },
       );
-      debugPrint(doc.toString());
+      debugPrint(challengeDoc.toString());
       debugPrint('New challenge created');
+
+      Document userChallengeDoc = await _database
+          .createDocument(collectionId: userChallengesCollectionId, data: {
+        'user_id': _loggedInUser,
+        'challenge_id': challengeId,
+        'challenge_name': challengeName,
+        'rank': 0
+      });
+      debugPrint('User challenge doc created');
+      debugPrint(userChallengeDoc.toString());
+    } catch (e) {
+      debugPrint('Error while creating new challenge');
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<DocumentList> getUserChallenges() async {
+    debugPrint('User id is: $_loggedInUser');
+    DocumentList docList = await _database.listDocuments(
+        collectionId: userChallengesCollectionId,
+        filters: ['user_id=$_loggedInUser']);
+
+    return docList;
+  }
+
+  void inviteUserToChallenge(
+      {required String email,
+      required String challengeId,
+      required String challengeName}) async {
+    DocumentList docList = await _database.listDocuments(
+        collectionId: userCollectionId, filters: ['email=$email'], limit: 1);
+
+    if (docList.documents == null || docList.documents.length == 0) {
+      throw (Exception("User doesn't exist"));
+    }
+
+    String userId = docList.documents[0].data['user_id'];
+    debugPrint('User id is: $userId');
+
+    try {
+      Document userChallengeDoc = await _database
+          .createDocument(collectionId: userChallengesCollectionId, data: {
+        'user_id': userId,
+        'challenge_id': challengeId,
+        'challenge_name': challengeName,
+        'rank': 0
+      });
+      debugPrint('User challenge doc created');
+      debugPrint(userChallengeDoc.toString());
     } catch (e) {
       debugPrint('Error while creating new challenge');
       debugPrint(e.toString());
