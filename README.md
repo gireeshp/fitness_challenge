@@ -21,14 +21,17 @@ Fitness Challenge is built on Flutter and [Appwrite](https://appwrite.io/). It u
 * Calculate leaderboard using server side functions
 
 ## Screenshots
-<img src="assets/screenshots/01-Welcome-Screen.png" height="400em">
-<img src="assets/screenshots/01-Signup.png" height="400em">
-<img src="assets/screenshots/02-Sign%20in%20page.png" height="400em">
+<p float="left">
+    <img src="assets/screenshots/01-Welcome-Screen.png" height="400em">
+    <img src="assets/screenshots/01-Signup.png" height="400em">
+    <img src="assets/screenshots/02-Sign%20in%20page.png" height="400em">
 <br>
+<p float="left">
 <img src="assets/screenshots/03-See%20Challenges.png" height="400em">
 <img src="assets/screenshots/04-See%20Leaderboard.png" height="400em">
 <img src="assets/screenshots/05-Invite%20Friends%20to%20Challenge.png" height="400em">
 <img src="assets/screenshots/10-Create%20new%20challenge.png" height="400em">
+</p>
 
 ## Getting Started
 
