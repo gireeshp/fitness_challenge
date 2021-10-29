@@ -7,7 +7,9 @@ Pursuing your fitness goals is fun together with friends. Challenge your friends
 * See all challenges they are participating in and their current rank
 * Create new challenge and choose the measure type - #Steps or Calories Burned.
 * Invite friends to the challenge using their email id
+* Sync their health data from Apple Health/Google fit
 * Open a challenge and see the leaderboard of all users
+
 
 <!-- 'Made with Appwrite' badge -->
 <a href="https://appwrite.io/">
@@ -67,3 +69,4 @@ Welcome, login & sign up pages are taken from this [github repo](https://github.
 * Start date & end date for challenges and declaration of winners
 * Option to choose other health data types in challenge - currently only Steps-count and Active-energy-burned are considered for challenge
 * Integration with Google Fit (currently integrated with Apple Health only)
+* Sync health data incrementally and automatically (without specific button click)
