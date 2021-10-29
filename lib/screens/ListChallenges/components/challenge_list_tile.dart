@@ -5,7 +5,7 @@ class ChallengeListTile extends StatelessWidget {
   final IconData icon;
   final String challengeName;
   final int yourRank;
-  final String description;
+  final String measureType;
   final String challengeId;
 
   const ChallengeListTile({
@@ -13,7 +13,7 @@ class ChallengeListTile extends StatelessWidget {
     required this.icon,
     required this.challengeName,
     required this.yourRank,
-    required this.description,
+    required this.measureType,
     required this.challengeId,
   }) : super(key: key);
 
@@ -23,14 +23,17 @@ class ChallengeListTile extends StatelessWidget {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return ChallengeScreen(
-              challengeId: challengeId, challengeName: challengeName);
+            challengeId: challengeId,
+            challengeName: challengeName,
+            measureType: measureType,
+          );
         }));
       },
       child: ListTile(
-        leading: FlutterLogo(),
+        leading: const FlutterLogo(),
         title: Text(challengeName),
-        subtitle: Text(description),
-        trailing: Text(yourRank.toString()),
+        subtitle: Text(measureType),
+        trailing: yourRank <= 0 ? const Text('NA') : Text(yourRank.toString()),
       ),
     );
   }

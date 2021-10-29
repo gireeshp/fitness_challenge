@@ -1,6 +1,7 @@
 import 'package:fitness_challenge/components/rounded_button.dart';
 import 'package:fitness_challenge/components/rounded_input_field.dart';
 import 'package:fitness_challenge/constants.dart';
+import 'package:fitness_challenge/screens/NewChallenge/components/body.dart';
 import 'package:fitness_challenge/services/appwrite_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -8,8 +9,12 @@ import 'package:provider/src/provider.dart';
 class InviteFriendScreen extends StatefulWidget {
   final String challengeId;
   final String challengeName;
+  final String measureType;
   const InviteFriendScreen(
-      {Key? key, required this.challengeId, required this.challengeName})
+      {Key? key,
+      required this.challengeId,
+      required this.challengeName,
+      required this.measureType})
       : super(key: key);
 
   @override
@@ -32,14 +37,17 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text('Invite friends to ${this.widget.challengeName}'),
+        title: Text('Invite friends to ${widget.challengeName}'),
       ),
       body: Container(
-        child: Column(children: [
-          SizedBox(height: 10),
+        padding: const EdgeInsets.only(top: 15),
+        width: size.width,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          const SizedBox(height: 10),
           const Text(
             "Friend's email id",
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -50,14 +58,14 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
               icon: Icons.sports,
               onChanged: (value) {},
               controller: _emailIdController),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           RoundedButton(text: 'Invite', press: press),
         ]),
       ),
     );
   }
 
-  press(BuildContext context) {
+  press(BuildContext context) async {
     String snackBarText = 'User invited to the challenge successfully!';
     bool successfullyInvitedToChallenge = true;
     int snackBarTime = 1500;
@@ -65,11 +73,13 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
     try {
       AppwriteService appwriteService = context.read<AppwriteService>();
 
-      appwriteService.inviteUserToChallenge(
-          challengeId: this.widget.challengeId,
-          challengeName: this.widget.challengeName,
-          email: _emailIdController.text);
-    } on Exception catch (e) {
+      await appwriteService.inviteUserToChallenge(
+        challengeId: widget.challengeId,
+        challengeName: widget.challengeName,
+        email: _emailIdController.text,
+        measureType: widget.measureType,
+      );
+    } catch (e) {
       snackBarText = e.toString();
       snackBarTime = 2500;
       successfullyInvitedToChallenge = false;

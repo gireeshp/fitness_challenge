@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/src/provider.dart';
 
-enum MeasureType { calories, steps }
+enum MeasureType { STEPS, ACTIVE_ENERGY_BURNED }
 
 class Body extends StatefulWidget {
   const Body({
@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  MeasureType _measureType = MeasureType.calories;
+  MeasureType _measureType = MeasureType.ACTIVE_ENERGY_BURNED;
   late TextEditingController _challengeNameController;
 
   @override
@@ -59,8 +59,9 @@ class _BodyState extends State<Body> {
             style: TextStyle(fontWeight: FontWeight.bold),
             textAlign: TextAlign.left,
           ),
-          buildRadio(title: 'Calories', measureType: MeasureType.calories),
-          buildRadio(title: 'Steps', measureType: MeasureType.steps),
+          buildRadio(
+              title: 'Calories', measureType: MeasureType.ACTIVE_ENERGY_BURNED),
+          buildRadio(title: 'Steps', measureType: MeasureType.STEPS),
           RoundedButton(text: 'Save', press: press),
         ],
       ),
@@ -75,10 +76,11 @@ class _BodyState extends State<Body> {
     try {
       AppwriteService appwriteService = context.read<AppwriteService>();
       String measureType = "";
-      if (_measureType.toString() == MeasureType.calories.toString()) {
-        measureType = MeasureType.calories.toString();
+      if (_measureType.toString() ==
+          MeasureType.ACTIVE_ENERGY_BURNED.toString()) {
+        measureType = MeasureType.ACTIVE_ENERGY_BURNED.toString();
       } else {
-        measureType = MeasureType.steps.toString();
+        measureType = MeasureType.STEPS.toString();
       }
 
       appwriteService.createNewChallenge(
@@ -109,10 +111,11 @@ class _BodyState extends State<Body> {
         groupValue: _measureType,
         onChanged: (MeasureType? value) {
           setState(() {
-            if (value.toString() == MeasureType.calories.toString()) {
-              _measureType = MeasureType.calories;
+            if (value.toString() ==
+                MeasureType.ACTIVE_ENERGY_BURNED.toString()) {
+              _measureType = MeasureType.ACTIVE_ENERGY_BURNED;
             } else {
-              _measureType = MeasureType.steps;
+              _measureType = MeasureType.STEPS;
             }
           });
         },

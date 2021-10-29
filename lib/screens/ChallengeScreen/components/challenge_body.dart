@@ -1,43 +1,43 @@
 import 'package:appwrite/models.dart';
+import 'package:fitness_challenge/screens/ChallengeScreen/components/leaderboard_list_tile.dart';
 import 'package:fitness_challenge/screens/ListChallenges/components/challenge_list_tile.dart';
 import 'package:fitness_challenge/services/appwrite_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
-class ChallengeListingBody extends StatefulWidget {
-  const ChallengeListingBody({Key? key}) : super(key: key);
+class ChallengeBody extends StatefulWidget {
+  final String challengeId;
+  const ChallengeBody({Key? key, required this.challengeId}) : super(key: key);
 
   @override
-  _ChallengeListingBodyState createState() => _ChallengeListingBodyState();
+  _ChallengeBodyState createState() => _ChallengeBodyState();
 }
 
-class _ChallengeListingBodyState extends State<ChallengeListingBody> {
+class _ChallengeBodyState extends State<ChallengeBody> {
   @override
   Widget build(BuildContext context) {
     AppwriteService appwriteService = context.read<AppwriteService>();
-    // AsyncSnapshot<DocumentList> docList = appwriteService.getUserChallenges();
-    // Future<DocumentList> docListdd = appwriteService.getUserChallenges();
 
     return FutureBuilder<DocumentList>(
-      future: appwriteService.getUserChallenges(),
+      future: appwriteService.getLeaderBoard(widget.challengeId),
       builder: (BuildContext context, AsyncSnapshot<DocumentList> docList) {
         if (docList.connectionState == ConnectionState.none &&
             docList.hasData == false) {
           debugPrint('No data');
           return Container();
         } else {
-          debugPrint('Has data - ${docList.data?.documents.length}');
+          debugPrint('Has data 1 - ${docList.data?.documents.length}');
           return ListView.builder(
               itemCount:
                   docList.data == null ? 0 : docList.data?.documents.length,
               itemBuilder: (BuildContext context, int index) {
                 Document? doc = docList.data?.documents[index];
-                return ChallengeListTile(
-                  icon: Icons.sports,
-                  challengeName: doc?.data['challenge_name'],
+                return LeaderboardListTile(
+                  icon: Icons.person,
+                  userEmail: doc?.data['email'],
+                  userId: doc?.data['challenge_id'],
+                  userName: doc?.data['user_name'],
                   yourRank: doc?.data['rank'],
-                  measureType: doc?.data['measure_type'],
-                  challengeId: doc?.data['challenge_id'],
                 );
               });
         }
